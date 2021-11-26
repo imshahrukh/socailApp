@@ -20,18 +20,23 @@ class APIfeatures {
 const postCtrl = {
   createPost: async (req, res) => {
     try {
-      const { content, images } = req.body;
+      const { content, category, images } = req.body;
 
-      if (images.length === 0)
-        return res.status(400).json({ msg: "Please add your photo." });
+      // if (images.length === 0)
+      //   return res.status(400).json({ msg: "Please add your photo." });
 
       const newPost = new Posts({
         content,
         images,
+        category,
+
         user: req.user._id,
       });
       await newPost.save();
-
+      console.log({
+        ...newPost._doc,
+        user: req.user,
+      });
       res.json({
         msg: "Created Post!",
         newPost: {

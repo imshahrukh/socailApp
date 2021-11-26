@@ -10,7 +10,7 @@ const StatusModal = () => {
   const dispatch = useDispatch();
 
   const [content, setContent] = useState("");
-  const [currentCategory, setCategory] = useState("");
+  const [currentCategory, setCategory] = useState("code");
   const [images, setImages] = useState([]);
 
   const [stream, setStream] = useState(false);
@@ -24,7 +24,9 @@ const StatusModal = () => {
     let newImages = [];
 
     files.forEach((file) => {
-      if (!file) return (err = "File does not exist.");
+      if (!file) {
+        setImages([...images, ...newImages]);
+      }
 
       if (file.size > 1024 * 1024 * 5) {
         return (err = "The image/video largest is 5mb.");
@@ -33,7 +35,7 @@ const StatusModal = () => {
       return newImages.push(file);
     });
 
-    if (err) dispatch({ type: GLOBALTYPES.ALERT, payload: { error: err } });
+    // if (err) dispatch({ type: GLOBALTYPES.ALERT, payload: { error: err } });
     setImages([...images, ...newImages]);
   };
 
@@ -79,16 +81,18 @@ const StatusModal = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (images.length === 0)
-      return dispatch({
-        type: GLOBALTYPES.ALERT,
-        payload: { error: "Please add your photo." },
-      });
+    // if (images.length === 0)
+    //   return dispatch({
+    //     type: GLOBALTYPES.ALERT,
+    //     payload: { error: "Please add your photo." },
+    //   });
 
     if (status.onEdit) {
       dispatch(updatePost({ content, images, currentCategory, auth, status }));
     } else {
       dispatch(createPost({ content, images, currentCategory, auth, socket }));
+
+      console.log({ content, images, currentCategory, auth, socket });
     }
 
     setContent("");
@@ -113,7 +117,9 @@ const StatusModal = () => {
     setValid(t.includes(false) ? false : true);
     console.log(t);
   }, [content]);
-
+  useEffect(() => {
+    console.log(currentCategory);
+  }, [currentCategory]);
   return (
     <div className="status_modal">
       <form onSubmit={handleSubmit}>

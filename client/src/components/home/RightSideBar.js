@@ -25,7 +25,7 @@ const RightSideBar = () => {
         )}
       </div> */}
 
-      {/* {suggestions.loading ? (
+      {suggestions.loading ? (
         <img src={LoadIcon} alt="loading" className="d-block mx-auto my-4" />
       ) : (
         <div className="suggestions">
@@ -35,7 +35,7 @@ const RightSideBar = () => {
             </UserCard>
           ))}
         </div>
-      )} */}
+      )}
 
       {/* <div style={{ opacity: 0.5 }} className="my-2">
         <a

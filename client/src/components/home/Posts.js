@@ -10,6 +10,7 @@ import { POST_TYPES } from "../../redux/actions/postAction";
 const Posts = () => {
   const { homePosts, auth, theme } = useSelector((state) => state);
   const dispatch = useDispatch();
+  const [currentCategory, setCategory] = useState("");
 
   const [load, setLoad] = useState(false);
   const [tempData, setTempData] = useState();
@@ -30,14 +31,13 @@ const Posts = () => {
     setLoad(false);
   };
   const onTextChange = (text) => {
-    setTexts(text);
-    if (text === "") {
+    setCategory(text);
+    // setTexts(text);
+    if (text === "all") {
       setTempData(homePosts.posts);
       return;
     }
-    const tempdatas = homePosts.posts.filter((post) =>
-      post.category.includes(text)
-    );
+    const tempdatas = homePosts.posts.filter((post) => post.category === text);
 
     setTempData(tempdatas);
   };
@@ -47,7 +47,7 @@ const Posts = () => {
   return (
     <div className="posts">
       <div>
-        <input
+        {/* <input
           style={{
             width: "100%",
             height: "3rem",
@@ -57,7 +57,19 @@ const Posts = () => {
           onChange={(e) => {
             onTextChange(e.target.value);
           }}
-        />
+        /> */}
+        <select
+          onChange={(event) => onTextChange(event.target.value)}
+          value={currentCategory}
+        >
+          <option value="all">all</option>
+          <option value="ece">ece</option>
+          <option value="cse">cse</option>
+          <option value="it">it</option>
+          <option value="eee">eee</option>
+          <option value="mae">mae</option>
+          <option value="coding">coding</option>
+        </select>
       </div>
       {tempData &&
         tempData.map((post) => (

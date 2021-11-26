@@ -1,5 +1,6 @@
 import { GLOBALTYPES } from "./globalTypes";
 import { imageUpload } from "../../utils/imageUpload";
+
 import {
   postDataAPI,
   getDataAPI,
@@ -24,7 +25,7 @@ export const createPost =
     try {
       dispatch({ type: GLOBALTYPES.ALERT, payload: { loading: true } });
       if (images.length > 0) media = await imageUpload(images);
-
+      // console.log({ content, images: media, category: currentCategory });
       const res = await postDataAPI(
         "posts",
         { content, images: media, category: currentCategory },
@@ -45,15 +46,17 @@ export const createPost =
         recipients: res.data.newPost.user.followers,
         url: `/post/${res.data.newPost._id}`,
         content,
-        image: media[0].url,
+        image:
+          media.lenght === 0 ? "https://picsum.photos/200/300" : media[0].url,
       };
+      console.log("data");
 
       dispatch(createNotify({ msg, auth, socket }));
     } catch (err) {
-      dispatch({
-        type: GLOBALTYPES.ALERT,
-        payload: { error: err.response.data.msg },
-      });
+      // dispatch({
+      //   type: GLOBALTYPES.ALERT,
+      //   payload: { error: err.response.data.msg },
+      // });
     }
   };
 
